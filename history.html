@@ -1,0 +1,10 @@
+<script src="js/simulateGAS.js"></script>
+<script>
+function goHome() {
+  google.script.run.withSuccessHandler(function(html){
+    document.open();
+    document.write(html);
+    document.close();
+  }).loadHomePage();
+}
+</script>

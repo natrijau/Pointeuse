@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Pointeuse - Accueil</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<noscript>
+  <div class="card">JavaScript est requis pour utiliser la pointeuse.</div>
+</noscript>
+<script>
+  // En production, `google.script.run` est fourni par Apps Script.
+  // En local (ouverture directe de index.html), on charge le simulateur.
+  if (typeof google === "undefined" || !google.script || !google.script.run) {
+    document.write('<script src="js/simulateGAS.js"><\/script>');
+  }
+</script>
+<script>
+// ========== Navigation ==========
+function goHome(){
+  const html = `<div class="card">
+    <h1>🕒 Pointeuse - Zitoune</h1>
+    <div class="controls">
+      <select id="userSelect" aria-label="Sélectionner utilisateur">
+        <option value="Nathan">Nathan</option>
+        <option value="Mathyas">Mathyas</option>
+      </select>
+      <button id="startBtn">Démarrer</button>
+      <button id="stopBtn">Terminer</button>
+      <button id="historyBtn" onclick="goHistory()">Historique</button>
+    </div>
+    <button id="profileBtn" onclick="goProfile()">Profil</button>
+    <div id="status">Statut : prêt</div>
+  </div>`;
+  document.body.innerHTML = html;
+  attachHomeEvents();
+}
+
+function goProfile(){
+  const user = document.getElementById('userSelect')?.value || "Nathan";
+  google.script.run.withSuccessHandler(html=>{
+    document.body.innerHTML = html;
+  }).loadProfilePage(user);
+}
+
+function goHistory(){
+  const user = document.getElementById('userSelect')?.value || "Nathan";
+  google.script.run.withSuccessHandler(html=>{
+    document.body.innerHTML = html;
+  }).loadHistoryPage(user);
+}
+
+// ========== Démarrer / Terminer ==========
+function attachHomeEvents(){
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const userSelect = document.getElementById('userSelect');
+  const statusEl = document.getElementById('status');
+
+  startBtn.onclick = function(){
+    const user = userSelect.value;
+    google.script.run.withSuccessHandler(msg=>{
+      statusEl.innerText = msg;
+    }).recordStart(user);
+  };
+
+  stopBtn.onclick = function(){
+    const user = userSelect.value;
+    google.script.run.withSuccessHandler(msg=>{
+      statusEl.innerText = msg;
+    }).recordStop(user);
+  };
+}
+
+goHome();
+</script>
+</body>
+</html>

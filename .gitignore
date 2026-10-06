@@ -1,0 +1,9 @@
+# Secrets locaux et configuration
+infos
+.clasp.json
+.clasprc.json
+
+# Environnement
+node_modules/
+*.log
+.DS_Store
